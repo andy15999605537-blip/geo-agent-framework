@@ -23,19 +23,24 @@ import geolib as G
 RE_DEFINITION = re.compile(
     r"(是一[款种个家类]|是指|指的是|定义为|全称[为是]|又称|简称为?|属于一[种类]"
     r"|とは|を指す|と呼ばれ|の略"
-    r"|\bis an? \w+|\brefers to\b|\bis defined as\b|\bstands for\b)", re.I
+    r"|\bis (?:an?|the) \w+|\brefers to\b|\bis defined as\b|\bstands for\b)", re.I
 )
 RE_NUMBER = re.compile(
     r"\d[\d,\.]*\s*(%|％|万|亿|千|倍|元|美元|人|家|个|天|小时|分钟|秒|次|条|款|年|月|"
     r"件|社|名|回|億|円|時間|"
-    r"percent|x\b|hours?|days?|users?|customers?)"
+    r"percent|x\b|hours?|days?|users?|customers?|"
+    r"kWp|kW|MW|W|VDC|VAC|V|A|Hz|°C|℃|RPM|HP|m³/h|m3/h|L/min|m|mm|cm|bar|psi)",
+    re.I
 )
 RE_COMPARE = re.compile(r"(对比|相比|区别|差异|优于|不如|竞品|替代|选型|哪个好|比較|違い|\bvs\.?\b|\bversus\b|\balternatives?\b)", re.I)
 RE_HOWTO = re.compile(r"(第[一二三四五六七八九十\d]+步|步骤\s*[一二三四五六七八九十\d]|操作流程|手順|ステップ\s*\d|使い方|\bstep\s*\d|\bhow to\b)", re.I)
+# 工业 B2B 页面常用编号卡片表达流程（例如 Design Flow: 1 Water demand / 2 Pump match），
+# 抽取后的纯文本未必保留 "Step" 字样；需同时出现流程上下文与至少 3 个独立编号，避免普通数字卡片误判。
+RE_HOWTO_CONTEXT = re.compile(r"(design flow|workflow|process|procedure|startup|installation|commissioning|selection flow|steps?|流程|步骤|安装|调试|选型流程)", re.I)
 # 「如何/怎么」只是弱信号，必须与列表结构共现才算操作步骤块（否则问句标题就送分）
 RE_HOWTO_SOFT = re.compile(r"(如何|怎么)")
 # 登录/注册/购物车/联系页等功能页天然低内容，不按 SPA 空壳 P0 误报
-FUNC_PAGE = re.compile(r"/(login|signin|signup|register|cart|checkout|account|auth|contact)(/|$)", re.I)
+FUNC_PAGE = re.compile(r"/(login|signin|signup|register|cart|checkout|account|auth|contact|author)(/|$)", re.I)
 RE_FAQ = re.compile(r"(常见问题|常见疑问|问答|よくある質問|\bFAQ\b|^\s*[问Q][:：]|答[:：])", re.I | re.M)
 RE_DATE = re.compile(r"(20\d{2}[-/年]\s?\d{1,2}[-/月]\s?\d{1,2}|更新[于时间]*[:：]?\s*20\d{2}|最后更新|发布于|\bupdated\b|\bpublished\b)", re.I)
 RE_AUTHOR = re.compile(r"(作者|撰文|编辑[:：]|著者|執筆|\bauthor\b|\bby\s+[A-Z][a-z]+)", re.I)
@@ -175,11 +180,15 @@ def score_page(page: dict, keywords: list[str]) -> dict:
     d["结构规范"] = s
 
     # 4. 可抽取块 25（GEO 的核心杠杆）
+    numbered_flow = (
+        len(re.findall(r"(?m)^\s*(?:[1-9]|1\d)[\.)]?\s*$", text)) >= 3
+        and bool(RE_HOWTO_CONTEXT.search(text))
+    )
     has = {
         "定义": bool(RE_DEFINITION.search(text)),
         "数字事实": len(RE_NUMBER.findall(text)) >= 3,
         "对比": bool(RE_COMPARE.search(text)) or page.get("table_count", 0) >= 1,
-        "操作步骤": bool(RE_HOWTO.search(text)) or (bool(RE_HOWTO_SOFT.search(text)) and lis >= 3),
+        "操作步骤": bool(RE_HOWTO.search(text)) or numbered_flow or (bool(RE_HOWTO_SOFT.search(text)) and lis >= 3),
         "FAQ": bool(RE_FAQ.search(text)) or "FAQPage" in types,
     }
     block_codes = {"定义": "NO_DEFINITION", "数字事实": "NO_NUMBERS", "对比": "NO_COMPARISON",
