@@ -137,7 +137,9 @@ MANUAL_ONLY = {
     "baidu": ("百度 AI 搜索", "cn"),
     "doubao_app": ("豆包 App / 网页版（与方舟 API 结果不同，需分开采）", "cn"),
     "chatgpt": ("ChatGPT 网页版（开 Search）", "global"),
+    "gemini_web": ("Gemini 网页版（与 Gemini API 分开统计）", "global"),
     "claude_web": ("Claude 网页版（开 Web Search）", "global"),
+    "perplexity_web": ("Perplexity 网页版（与 Perplexity API 分开统计）", "global"),
     "google_aio": ("Google AI Overviews（搜索页顶部 AI 摘要，无则记「未触发」）", "global"),
     "metaso": ("秘塔AI搜索（引用为角标非链接，答案可采、引用常为 0 条）", "cn"),
 }
@@ -871,6 +873,7 @@ def store_manual_rows(slug: str, cfg: dict, rows: list[dict]) -> dict:
 SESSION_MODES = {
     "sandbox": ("一次性沙箱（无历史无 Cookie，未登录）", "A_人工真实样本"),
     "incognito": ("无痕未登录", "A_人工真实样本"),
+    "clean_guest": ("专用采样 Profile（未登录、无历史）", "A_人工真实样本"),
     "clean_profile": ("专用采样 Profile（已登录，无自查历史）", "A_人工真实样本"),
     "personal": ("个人日常账号（含个性化，仅供参考）", "D_待复核"),
 }

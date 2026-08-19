@@ -11,7 +11,9 @@ let GROUPS = [];           // 选中的意图分组（空 = 全部）
 // 站点 → 平台码。识别不了的站让用户在下拉里自己选（下拉来自服务端平台清单）。
 const HOST2PLAT = {
   "chatgpt.com": "chatgpt", "chat.openai.com": "chatgpt",
+  "gemini.google.com": "gemini_web",
   "claude.ai": "claude_web",
+  "perplexity.ai": "perplexity_web",
   "doubao.com": "doubao_app",
   "google.com": "google_aio",
   "chat.baidu.com": "baidu", "yiyan.baidu.com": "baidu", "wenxin.baidu.com": "baidu",
