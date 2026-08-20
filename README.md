@@ -1,8 +1,8 @@
 <div align="center">
 
-# Geo**Look**
+# Geo Agent Framework
 
-**Open-source, self-hosted platform for end-to-end GEO implementation**
+**Open-source, self-hosted framework for building Generative Engine Optimization (GEO) agents**
 
 For a specific project: status analysis → diagnosis → strategy → implementation tickets → execution → verification
 
@@ -10,15 +10,44 @@ English · [简体中文](README.zh-CN.md) · [日本語](README.ja.md)
 
 ![License](https://img.shields.io/badge/license-MIT-9184d9) ![Python](https://img.shields.io/badge/python-3.9%2B-9184d9) ![Platform](https://img.shields.io/badge/platform-macOS%20%7C%20Linux-9184d9) ![Deps](https://img.shields.io/badge/deps-requests%20·%20bs4%20·%20lxml-9184d9)
 
-<a href="https://www.producthunt.com/products/geolook?embed=true&utm_source=badge-featured&utm_medium=badge&utm_campaign=badge-geolook" target="_blank"><img src="https://api.producthunt.com/widgets/embed-image/v1/featured.svg?post_id=1211264&theme=dark&t=1786200566986" alt="GeoLook - Open-source, self-hosted platform for end-to-end GEO | Product Hunt" width="250" height="54" /></a>
-
 ![Product demo](docs/demo.en.gif)
 
-🌐 [Website geolook.cc](https://geolook.cc) · 🔍 [Live demo (read-only)](https://geolook.cc/demo/) · 📹 [HD demo video (mp4)](docs/demo.en.mp4) · 🖼 [All screenshots](docs/screenshots-en/)
-
-<sub>Mirror while DNS propagates: [geolook.cc](https://geolook.cc) · [demo](https://geolook.cc/demo/)</sub>
+📖 Framework documentation · 📹 [HD demo video (mp4)](docs/demo.en.mp4) · 🖼 [All screenshots](docs/screenshots-en/)
 
 </div>
+
+## Quick overview
+
+Geo Agent Framework is a reusable GEO execution framework. It helps companies and agencies build their own AI visibility workflow:
+
+**AI visibility sampling → diagnosis → action planning → content/assets generation → verification**
+
+Unlike a fixed SaaS dashboard, this framework is designed to be customized for different brands. You provide your own brand knowledge, question sets and execution rules; the framework provides the workflow, audit logic and measurement system.
+
+## Customize for your own brand
+
+The main customization layer is separated from the framework logic:
+
+```
+your-brand/
+├── brand_facts.json       # company/product facts
+├── question_bank.json     # buyer questions to monitor
+└── policies/              # GEO strategy rules
+```
+
+Replace the example data with your own information, then run the same GEO workflow for your website or clients.
+
+## Installation
+
+Basic setup:
+
+```bash
+git clone https://github.com/andy15999605537-blip/geo-agent-framework.git
+cd geo-agent-framework
+cp .env.example .env
+```
+
+Install dependencies according to your environment and start with the included scripts/documentation.
 
 > GEO = Generative Engine Optimization: getting AI engines (ChatGPT, Perplexity, Gemini, DeepSeek, Doubao…) to **proactively mention and cite your brand** when answering user questions. Not geographic info, not classic SEO.
 
