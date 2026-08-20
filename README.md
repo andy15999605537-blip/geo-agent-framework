@@ -51,6 +51,12 @@ Install dependencies according to your environment and start with the included s
 
 > GEO = Generative Engine Optimization: getting AI engines (ChatGPT, Perplexity, Gemini, DeepSeek, Doubao…) to **proactively mention and cite your brand** when answering user questions. Not geographic info, not classic SEO.
 
+## Documentation
+
+- [Architecture](ARCHITECTURE.md) — framework design and extension model
+- [Framework diagram](docs/framework-architecture.md) — visual overview
+- [Contributing](CONTRIBUTING.md) — how to add GEO capabilities
+
 ## 1. Problems it solves
 
 More and more users ask AI directly — "best tools for X", "X vs Y, which one". If your brand:
